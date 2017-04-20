@@ -28,6 +28,7 @@ import xml.dom.minidom
 
 from reportlab import platypus
 from reportlab.graphics.barcode import code39
+from reportlab.lib.colors import gray
 import reportlab
 from reportlab.pdfgen import canvas
 
@@ -397,6 +398,11 @@ class _rml_canvas(object):
                 args['width'] = sx * args['height'] / sy
             else:
                 args['height'] = sy * args['width'] / sx
+                
+        if node.hasAttribute("showBoundary"):
+            self.canvas.setStrokeColor(args.get("boundaryColour", gray))
+            self.canvas.rect(0, 0, args['width'], args['height'])
+            
         self.canvas.drawImage(img, **args)
 
     def _barcode(self, node):
